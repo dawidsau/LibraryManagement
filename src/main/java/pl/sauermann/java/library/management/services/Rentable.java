@@ -1,4 +1,4 @@
-package pl.sauermann.java.library.management;
+package pl.sauermann.java.library.management.services;
 
 import pl.sauermann.java.library.management.book.Book;
 
