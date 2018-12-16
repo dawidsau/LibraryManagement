@@ -1,12 +1,9 @@
 package pl.sauermann.java.library.management.services;
 
-import pl.sauermann.java.library.management.User;
 import pl.sauermann.java.library.management.book.Book;
 
-import java.util.List;
 import java.util.Map;
-
-// TODO: rentBook and returnBook method,
+import java.util.Set;
 
 
 public class RentManager implements Rentable {
@@ -23,17 +20,26 @@ public class RentManager implements Rentable {
 
     @Override
     public boolean rentBook(Book book) {
-        return false;
+        Long oldValue = booksCopiesMap.get(book);
+        return booksCopiesMap.replace(book, oldValue - 1) != null;
+
     }
 
     @Override
     public boolean returnBook(Book book) {
-        return false;
+        Long oldValue = booksCopiesMap.get(book);
+        return booksCopiesMap.replace(book, oldValue + 1) != null;
+
     }
 
     @Override
     public boolean isBookAvailable(Book book) {
         return getAmountOfBooks(book) > 0;
+    }
+
+    @Override
+    public Set<Book> getAllBooksAvailable() {
+        return booksCopiesMap.keySet();
     }
 
     private long getAmountOfBooks(Book book) {
