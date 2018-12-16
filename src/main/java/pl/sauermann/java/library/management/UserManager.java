@@ -1,32 +1,38 @@
 package pl.sauermann.java.library.management;
 
-import java.util.List;
+import pl.sauermann.java.library.management.book.Book;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class UserManager {
 
-    private List<User> users;
+    private Map<User, Set<Book>> usersRentedBookMap;
 
-    public UserManager(List<User> users) {
-        this.users = users;
+
+    public UserManager() {
+        usersRentedBookMap = new HashMap<>();
     }
 
-    public List<User> getUsers() {
-        return users;
+    public Set<User> getUsers() {
+        return usersRentedBookMap.keySet();
     }
 
-    public List<User> getUsersWithAdminAccess(){
-        return users.stream()
-                    .filter(user -> user.getAccessType().equals(User.AccessType.ADMIN))
-                    .collect(Collectors.toList());
+    public Set<User> getUsersWithAdminAccess(){
+        return usersRentedBookMap.keySet().stream()
+                    .filter(User::isAdmin)
+                    .collect(Collectors.toSet());
     }
 
-    public boolean addUser(User user){
-        return  users != null && users.add(user);
+    public void addUser(User user){
+        usersRentedBookMap.putIfAbsent(user, Collections.emptySet());
     }
 
     public void removeUser(User user){
-         users.remove(user);
+        usersRentedBookMap.remove(user);
     }
 
 }

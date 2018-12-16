@@ -31,6 +31,10 @@ public class User {
         return accessType;
     }
 
+    public Boolean isAdmin() {
+        return accessType == AccessType.ADMIN;
+    }
+
     @Override
     public String toString() {
         return "User:" + name + " " + surname;
