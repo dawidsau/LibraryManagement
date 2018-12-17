@@ -7,8 +7,8 @@ import java.util.Set;
 public interface Rentable {
 
     boolean rentBook(Book book);
-    boolean returnBook(Book book);
-    boolean isBookAvailable(Book book);
-    Set<Book> getAllBooksAvailable();
 
+    boolean returnBook(Book book);
+
+    boolean isBookAvailable(Book book);
 }

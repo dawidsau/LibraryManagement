@@ -1,6 +1,8 @@
 package pl.sauermann.java.library.management;
 
 
+import java.util.Objects;
+
 public class User {
 
     private String name;
@@ -40,6 +42,20 @@ public class User {
         return "User:" + name + " " + surname;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(getName(), user.getName()) &&
+                Objects.equals(getSurname(), user.getSurname()) &&
+                getAccessType() == user.getAccessType();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getSurname(), getAccessType());
+    }
 
     enum AccessType {
         ADMIN, USER

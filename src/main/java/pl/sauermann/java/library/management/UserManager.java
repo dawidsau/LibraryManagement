@@ -1,13 +1,9 @@
 package pl.sauermann.java.library.management;
 
 import pl.sauermann.java.library.management.book.Book;
-import pl.sauermann.java.library.management.services.RentManager;
 import pl.sauermann.java.library.management.services.Rentable;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class UserManager {
@@ -19,8 +15,8 @@ public class UserManager {
         usersRentedBookMap = new HashMap<>();
     }
 
-    public Set<User> getUsers() {
-        return usersRentedBookMap.keySet();
+    public Map<User, Set<Book>> getUsersRentedBookMap() {
+        return usersRentedBookMap;
     }
 
     public Set<User> getUsersWithAdminAccess() {
@@ -30,7 +26,7 @@ public class UserManager {
     }
 
     public void addUser(User user) {
-        usersRentedBookMap.putIfAbsent(user, Collections.emptySet());
+        usersRentedBookMap.putIfAbsent(user, new HashSet<>());
     }
 
     public void removeUser(User user) {
@@ -46,18 +42,12 @@ public class UserManager {
     }
 
     private void changingInBookSet(User user, Book book, Modifier modifier, Rentable rentManger) {
-        boolean modificationInRentMap = false;
         if (usersRentedBookMap.containsKey(user)) {
             Set<Book> books = usersRentedBookMap.get(user);
-            if (modifier == Modifier.REMOVE) {
+            if (modifier == Modifier.REMOVE && rentManger.returnBook(book)) {
                 books.remove(book);
-                modificationInRentMap = rentManger.returnBook(book);
-            } else if (modifier == Modifier.ADD) {
+            } else if (modifier == Modifier.ADD && rentManger.rentBook(book)) {
                 books.add(book);
-                modificationInRentMap = rentManger.rentBook(book);
-            }
-            if (modificationInRentMap) {
-                usersRentedBookMap.replace(user, books);
             }
         }
     }

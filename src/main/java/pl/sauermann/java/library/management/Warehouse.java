@@ -12,15 +12,15 @@ public class Warehouse {
 
     private static int warehouseCount = 0;
 
-    private Map<Book, Integer> booksNumberOfCopies;
+    private Map<Book, Long> booksNumberOfCopiesMap;
 
-    public Warehouse(Map<Book, Integer> booksNumberOfCopies) {
-        this.booksNumberOfCopies = booksNumberOfCopies;
+    public Warehouse(Map<Book, Long> booksNumberOfCopiesMap) {
+        this.booksNumberOfCopiesMap = booksNumberOfCopiesMap;
         warehouseCount = warehouseCount + 1;
     }
 
-    public Map<Book, Integer> getBooksNumberOfCopies() {
-        return booksNumberOfCopies;
+    public Map<Book, Long> getBooksNumberOfCopiesMap() {
+        return booksNumberOfCopiesMap;
     }
 
     public static int getWarehouseCount() {
@@ -30,24 +30,24 @@ public class Warehouse {
     public void addBookCopyToWarehouse(Book book, User user) {
         if (user.isAdmin()) {
             if (!replaceValueInMap(book, INCREASE)) {
-                booksNumberOfCopies.put(book, 1);
+                booksNumberOfCopiesMap.put(book, 1L);
             }
         }
     }
 
-    public void removeBookCopyFromToWarehouse(Book book, User user) {
+    public void removeBookCopyFromWarehouse(Book book, User user) {
         if (user.isAdmin()) {
             if (!replaceValueInMap(book, DECREASE)) {
-                booksNumberOfCopies.remove(book);
+                booksNumberOfCopiesMap.remove(book);
             }
         }
     }
 
     private boolean replaceValueInMap(Book book, int modifier) {
         boolean result = false;
-        if (booksNumberOfCopies.containsKey(book) && booksNumberOfCopies.get(book) > 1) {
-            Integer temp = booksNumberOfCopies.get(book);
-            booksNumberOfCopies.replace(book, temp + modifier);
+        if (booksNumberOfCopiesMap.containsKey(book) && booksNumberOfCopiesMap.get(book) > 1) {
+            Long temp = booksNumberOfCopiesMap.get(book);
+            booksNumberOfCopiesMap.replace(book, temp + modifier);
             result = true;
         }
         return result;
@@ -55,7 +55,7 @@ public class Warehouse {
 
     @Override
     public String toString() {
-        return "All books available in library: \n" + booksNumberOfCopies;
+        return "All books available in library "+ warehouseCount +": \n" + booksNumberOfCopiesMap;
     }
 
     @Override
@@ -63,11 +63,11 @@ public class Warehouse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Warehouse warehouse = (Warehouse) o;
-        return Objects.equals(getBooksNumberOfCopies(), warehouse.getBooksNumberOfCopies());
+        return Objects.equals(getBooksNumberOfCopiesMap(), warehouse.getBooksNumberOfCopiesMap());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getBooksNumberOfCopies());
+        return Objects.hash(getBooksNumberOfCopiesMap());
     }
 }
