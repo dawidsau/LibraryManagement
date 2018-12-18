@@ -3,18 +3,19 @@ package pl.sauermann.java.library.management.book;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Book implements Comparable<Book>{
+public class Book implements Comparable<Book> {
 
     private String title;
     private Author author;
-    private long numberOfPages;
     private BookType bookType;
+    private long numberOfPages;
     private LocalDate distributionDate;
 
     public Book(String title, Author author, BookType bookType) {
         this.title = title;
         this.author = author;
         this.bookType = bookType;
+        distributionDate = LocalDate.now();
     }
 
     public Book(String title, Author author, long numberOfPages, BookType bookType) {
@@ -22,6 +23,8 @@ public class Book implements Comparable<Book>{
         this.author = author;
         this.numberOfPages = numberOfPages;
         this.bookType = bookType;
+        distributionDate = LocalDate.now();
+
     }
 
     public Book(String title, Author author, long numberOfPages, LocalDate distributionDate, BookType bookType) {
@@ -76,12 +79,6 @@ public class Book implements Comparable<Book>{
     public int compareTo(Book o) {
         return title.equals(o.title) ?
                 author.getSurname().compareToIgnoreCase(o.author.getSurname()) :
-                title.compareToIgnoreCase(o.title) ;
+                title.compareToIgnoreCase(o.title);
     }
-
-    enum BookType {
-        FICTION, ACTION, COOKBOOK, CRIME,
-        DRAMA, GUIDE, FANTASY, HISTORY;
-    }
-
 }
