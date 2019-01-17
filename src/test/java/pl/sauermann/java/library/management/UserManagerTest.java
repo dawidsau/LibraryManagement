@@ -29,7 +29,8 @@ public class UserManagerTest {
         normalUserTwo = new User("Tom", "Brands");
         adminUser = new User("Ali", "Guler", User.AccessType.ADMIN);
         author = new Author("Walery", "Jakobic");
-        book = new Book("Book title", author, BookType.ACTION);
+        book = new Book.UserBuilder("Book title", author, BookType.ACTION)
+                .build();
         bookCopiesMap = new HashMap<>();
         warehouse = new Warehouse(bookCopiesMap);
         rentManager = new RentManager(warehouse);
@@ -91,6 +92,18 @@ public class UserManagerTest {
         Set<Book> result = userManager.getUsersRentedBookMap().get(normalUser);
 
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void shouldNotRentBookWithNullPositions() {
+        bookCopiesMap.put(book, null);
+
+        userManager.addUser(normalUser);
+        userManager.addBookToUser(normalUser, book, rentManager);
+        Set<Book> expected = new HashSet<>();
+        Set<Book> result = userManager.getUsersRentedBookMap().get(normalUser);
+
+        assertEquals(expected, result);
     }
 
 

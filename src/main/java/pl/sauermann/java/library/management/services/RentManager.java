@@ -42,6 +42,6 @@ public class RentManager implements Rentable {
     }
 
     private long getAmountOfBooks(Book book) {
-        return bookCopiesMap.getOrDefault(book, 0L);
+        return bookCopiesMap.getOrDefault(book, 0L) != null ? bookCopiesMap.getOrDefault(book, 0L) : 0;
     }
 }

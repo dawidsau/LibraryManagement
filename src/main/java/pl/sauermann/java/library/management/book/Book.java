@@ -5,34 +5,18 @@ import java.util.Objects;
 
 public class Book implements Comparable<Book> {
 
-    private String title;
-    private Author author;
-    private BookType bookType;
-    private long numberOfPages;
-    private LocalDate distributionDate;
+    private final String title;
+    private final Author author;
+    private final BookType bookType;
+    private final long numberOfPages;
+    private final LocalDate distributionDate;
 
-    public Book(String title, Author author, BookType bookType) {
-        this.title = title;
-        this.author = author;
-        this.bookType = bookType;
-        distributionDate = LocalDate.now();
-    }
-
-    public Book(String title, Author author, long numberOfPages, BookType bookType) {
-        this.title = title;
-        this.author = author;
-        this.numberOfPages = numberOfPages;
-        this.bookType = bookType;
-        distributionDate = LocalDate.now();
-
-    }
-
-    public Book(String title, Author author, long numberOfPages, LocalDate distributionDate, BookType bookType) {
-        this.title = title;
-        this.author = author;
-        this.numberOfPages = numberOfPages;
-        this.distributionDate = distributionDate;
-        this.bookType = bookType;
+    public Book(UserBuilder builder) {
+        this.title = builder.title;
+        this.author = builder.author;
+        this.bookType = builder.bookType;
+        this.numberOfPages = builder.numberOfPages;
+        this.distributionDate = builder.distributionDate;
     }
 
     public String getTitle() {
@@ -80,5 +64,33 @@ public class Book implements Comparable<Book> {
         return title.equals(o.title) ?
                 author.getSurname().compareToIgnoreCase(o.author.getSurname()) :
                 title.compareToIgnoreCase(o.title);
+    }
+
+    public static class UserBuilder{
+        private final String title;
+        private final Author author;
+        private final BookType bookType;
+        private long numberOfPages = 0;
+        private  LocalDate distributionDate = LocalDate.now();
+
+        public UserBuilder(String title, Author author, BookType bookType) {
+            this.title = title;
+            this.author = author;
+            this.bookType = bookType;
+        }
+
+        public UserBuilder numberOfPages(long numberOfPages){
+            this.numberOfPages = numberOfPages;
+            return this;
+        }
+
+        public UserBuilder distributionDate(LocalDate distributionDate){
+            this.distributionDate = distributionDate;
+            return this;
+        }
+
+        public Book build() {
+            return new Book(this);
+        }
     }
 }
